@@ -18,21 +18,37 @@ class TriviaTestCase(unittest.TestCase):
         self.database_path = "postgres://{}/{}".format('', self.database_name)
         setup_db(self.app, self.database_path)
 
+        self.new_category = Category(
+            type="Test"
+        )
+
+        self.new_question = Question(
+            question="Why did the chicken cross the road?",
+            answer="To get to the other side.",
+            difficulty=1,
+            category=1
+        )
+
         # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
-    
-    def tearDown(self):
-        """Executed after reach test"""
-        pass
 
-    """
-    TODO
-    Write at least one test for each test for successful operation and for expected errors.
-    """
+            # insert a category and corresponding question
+            self.db.session.add(self.new_category)
+            self.new_question.category=self.db.session.query(Category).one().id
+            self.db.session.add(self.new_question)
+            self.db.session.commit()
+
+    def tearDown(self):
+        """Executed after each test"""
+        # clear all table entries
+        with self.app.app_context():
+            self.db.session.query(Question).delete()
+            self.db.session.query(Category).delete()
+            self.db.session.commit()
 
 
 # Make the tests conveniently executable
