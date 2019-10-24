@@ -55,8 +55,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'Resource not found')    
-
+        self.assertEqual(data['message'], 'Resource not found')
 
     """ Test endpoint DELETE /questions"""
     def test_delete_question(self):
@@ -78,10 +77,14 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable')
 
-
     """ Test endpoint POST /questions"""
     def test_create_question(self):
-        res = self.client().post('/questions', json={"question":"Why did the chicken cross the road?", "answer":"To get to the other side.", "difficulty":1, "category":"4"})
+        res = self.client().post('/questions', json={
+                "question": "Why did the chicken cross the road?",
+                "answer": "To get to the other side.",
+                "difficulty": 1,
+                "category": "4"
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -95,7 +98,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable')
-
 
     """ Test endpoint POST /questions/search"""
     def test_search_questions(self):
@@ -114,7 +116,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable')
-
 
     """ Test endpoint POST /questions/<int:category_id>/questions"""
     def test_get_questions_by_category(self):
@@ -135,13 +136,15 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'Resource not found')    
-
+        self.assertEqual(data['message'], 'Resource not found')
 
     """ Test endpoint POST /quizzes"""
     def test_get_quiz_questions(self):
         category_id = 1
-        res = self.client().post('/quizzes', json={"previous_questions":[],"quiz_category":{"type":"Test","id":category_id}})
+        res = self.client().post('/quizzes', json={
+                "previous_questions": [],
+                "quiz_category": {"type": "Test", "id": category_id}
+            })
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -156,6 +159,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Unprocessable')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
