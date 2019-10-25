@@ -125,6 +125,8 @@ def create_app(test_config=None):
     Creates a new question using the submitted question, answer, difficulty,
     and category. Returns the id of the created question, success value, total
     number of questions, and list of questions.
+
+    A valid request must contain a question and answer with a non-empty string.
     '''
     @app.route('/questions', methods=['POST'])
     def create_question():
@@ -135,6 +137,9 @@ def create_app(test_config=None):
             new_answer = body.get('answer', None)
             new_category = body.get('category', None)
             new_difficulty = body.get('difficulty', None)
+
+            if new_question == "" or new_answer == "":
+                abort(422)
 
             question = Question(
                 question=new_question,
