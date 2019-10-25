@@ -54,7 +54,7 @@ def create_app(test_config=None):
     @app.route('/categories', methods=['GET'])
     def get_categories():
         selection = Category.query.order_by(Category.id).all()
-        categories = [category.type for category in selection]
+        categories = {category.id: category.type for category in selection}
 
         if len(categories) == 0:
             abort(404)
@@ -76,7 +76,9 @@ def create_app(test_config=None):
         questions = paginate_questions(request, question_selection)
 
         category_selection = Category.query.order_by(Category.id).all()
-        categories = [category.type for category in category_selection]
+        categories = {
+            category.id: category.type for category in category_selection
+        }
 
         if len(questions) == 0:
             abort(404)
@@ -188,17 +190,17 @@ def create_app(test_config=None):
     for the category id. Also returns current category id, success value, and
     total number of questions in the category.
     '''
-    @app.route('/categories/<int:category_id>/questions', methods=['GET'])
+    @app.route('/categories/<string:category_id>/questions', methods=['GET'])
     def get_questions_by_category(category_id):
         try:
             category = Category.query.filter(
-                Category.id == str(category_id+1)).one_or_none()
+                Category.id == category_id).one_or_none()
 
             if category is None:
                 abort(404)
 
             selection = Question.query.order_by(Question.id).filter(
-                Question.category == str(category_id+1)).all()
+                Question.category == category_id).all()
             questions = paginate_questions(request, selection)
 
             return jsonify({
@@ -228,11 +230,11 @@ def create_app(test_config=None):
             quiz_category = body.get('quiz_category', None).get('id', None)
             previous_questions = body.get('previous_questions', None)
 
-            if quiz_category == -1:
+            if quiz_category == 0:
                 selection = Question.query.order_by(Question.id).all()
             else:
                 selection = Question.query.order_by(Question.id).filter(
-                    Question.category == str(int(quiz_category)+1)).all()
+                    Question.category == str(int(quiz_category))).all()
 
             questions = [question.format() for question in selection]
             available_questions = [
