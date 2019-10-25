@@ -72,14 +72,14 @@ python test_flaskr.py
 
 ```
 {
-  "categories": [
-    "Science", 
-    "Art", 
-    "Geography", 
-    "History", 
-    "Entertainment", 
-    "Sports"
-  ], 
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
   "success": true, 
   "total_categories": 6
 }
@@ -93,14 +93,14 @@ python test_flaskr.py
 
 ```
 {
-  "categories": [
-    "Science", 
-    "Art", 
-    "Geography", 
-    "History", 
-    "Entertainment", 
-    "Sports"
-  ], 
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
   "current_category": null, 
   "questions": [
     {
@@ -215,28 +215,35 @@ python test_flaskr.py
 
 #### GET /categories/{category_id}/questions
 - Returns a list of questions for a given category (returning any questions for the category id), current category id, success value, and total number of questions in the category.
-> Example : `curl http://localhost:3000/categories/5/questions`
+> Example : `curl http://localhost:5000/categories/5/questions`
 ```
 {
-  "current_category": 5, 
+  "current_category": "5", 
   "questions": [
     {
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3, 
-      "id": 10, 
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
+      "answer": "Apollo 13", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
     }, 
     {
-      "answer": "Uruguay", 
-      "category": 6, 
+      "answer": "Tom Cruise", 
+      "category": "5", 
       "difficulty": 4, 
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?"
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": "5", 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
     }
   ], 
   "success": true, 
-  "total_questions": 2
+  "total_questions": 3
 }
 ```
 
